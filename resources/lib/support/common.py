@@ -7,9 +7,9 @@ import logging
 import threading
 from contextlib import closing
 
-from util.causedexception import CausedException
-from util.enum import Enum
-from util.ordereddict import OrderedDict
+from vendor.causedexception import CausedException
+from vendor.enum import Enum
+from vendor.ordereddict import OrderedDict
 from support.plugin import plugin
 
 from xbmcswift2 import xbmc, xbmcgui, xbmcvfs, actions

@@ -5,7 +5,7 @@ from support.abstract.proxylist import ProxyListException
 from support.common import LocalizedError, lowercase, lang
 from support.plugin import plugin
 from support.xrequests import NoValidProxiesFound, Session
-from util.timer import Timer
+from vendor.timer import Timer
 from requests import RequestException, Timeout
 
 import os

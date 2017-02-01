@@ -8,9 +8,9 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from support.common import str_to_date, Attribute
 from support.abstract.scraper import AbstractScraper, ScraperError, parse_size
-from util.encoding import ensure_str
-from util.htmldocument import HtmlDocument
-from util.timer import Timer
+from vendor.encoding import ensure_str
+from vendor.htmldocument import HtmlDocument
+from vendor.timer import Timer
 
 
 class Series(namedtuple('Series', ['id', 'title', 'original_title', 'image', 'icon', 'poster', 'country', 'year',
