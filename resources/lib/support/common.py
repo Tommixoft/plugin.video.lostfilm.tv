@@ -344,19 +344,6 @@ def download_torrent(torrent):
         plugin.run_addon(client.addon_id)
 
 
-def run_plugin():
-    try:
-        plugin.run()
-    except LocalizedError as e:
-        e.log()
-        if e.kwargs.get('dialog'):
-            xbmcgui.Dialog().ok(lang(30000), *e.localized.split("|"))
-        else:
-            notify(e.localized)
-        if e.kwargs.get('check_settings'):
-            plugin.open_settings()
-
-
 def get_torrent(url):
     import support.services as services
     torrent = services.torrent(url)
