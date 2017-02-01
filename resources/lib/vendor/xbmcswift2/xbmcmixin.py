@@ -11,7 +11,7 @@ from xbmcswift2 import xbmc, xbmcaddon, xbmcplugin, xbmcgui
 from xbmcswift2.storage import TimedStorage
 from xbmcswift2.logger import log
 from xbmcswift2.constants import VIEW_MODES, SortMethod
-from common import Modes, DEBUG_MODES
+from xbmcswift2.common import Modes, DEBUG_MODES
 from request import Request
 
 

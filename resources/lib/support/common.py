@@ -7,9 +7,6 @@ import logging
 import threading
 from contextlib import closing
 
-from vendor.causedexception import CausedException
-from vendor.enum import Enum
-from vendor.ordereddict import OrderedDict
 from support.plugin import plugin
 
 from xbmcswift2 import xbmc, xbmcgui, xbmcvfs, actions
@@ -24,10 +21,6 @@ UPPERCASE_LETTERS = u'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНО
 
 lang = plugin.get_string
 log = logging.getLogger(__name__)
-
-
-def notify(message, delay=10000):
-    plugin.notify(message, lang(30000), delay, plugin.addon.getAddonInfo('icon'))
 
 
 def save_path(local=False):
@@ -230,72 +223,6 @@ def with_fanart(item, url=None):
             else:
                 properties["fanart_image"] = url
         return item
-
-
-class LocalizedEnum(Enum):
-    @property
-    def lang_id(self):
-        raise NotImplementedError()
-
-    @property
-    def localized(self):
-        return lang(self.lang_id)
-
-    @classmethod
-    def strings(cls):
-        d = [(i.name, i.localized(lang)) for i in cls]
-        return OrderedDict(sorted(d, key=lambda t: t[1]))
-
-    def __lt__(self, other):
-        return self.localized < other.localized
-
-    def __str__(self):
-        return self.localized
-
-
-class Attribute(LocalizedEnum):
-    def get_lang_base(self):
-        raise NotImplementedError()
-
-    @property
-    def lang_id(self):
-        return self.get_lang_base() + self.id
-
-    @property
-    def id(self):
-        return self.value[0]
-
-    @property
-    def filter_val(self):
-        return self.value[1]
-
-    def __repr__(self):
-        return "<%s.%s>" % (self.__class__.__name__, self._name_)
-
-    @classmethod
-    def find(cls, what):
-        for i in cls.__iter__():
-            if what in i.value or i.name == what:
-                return i
-        return None
-
-
-class LocalizedError(CausedException):
-    def __init__(self, lang_code, reason, *args, **kwargs):
-        CausedException.__init__(self, **kwargs)
-        self.reason = reason
-        self.reason_args = args
-        self.lang_code = lang_code
-
-    @property
-    def localized(self):
-        return lang(self.lang_code) % self.reason_args
-
-    def __str__(self):
-        if isinstance(self.reason, basestring):
-            return self.reason % self.reason_args
-        else:
-            return str(self.reason)
 
 
 def translate_string(s, from_letters, to_letters):

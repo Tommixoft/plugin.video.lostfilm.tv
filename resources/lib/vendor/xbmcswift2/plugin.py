@@ -22,13 +22,12 @@ except ImportError:
 
 from listitem import ListItem
 from logger import log, setup_log
-from common import enum
-from common import clean_dict
 from urls import UrlRule, NotFoundException, AmbiguousUrlException
 from xbmcswift2 import (xbmc, xbmcgui, xbmcplugin, xbmcaddon, Request,)
-
+from xbmcswift2.common import enum
+from xbmcswift2.common import clean_dict
+from xbmcswift2.common import Modes, DEBUG_MODES
 from xbmcmixin import XBMCMixin
-from common import Modes, DEBUG_MODES
 
 
 class Plugin(XBMCMixin):

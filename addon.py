@@ -6,8 +6,8 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'resources', 'lib'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'resources', 'lib', 'vendor'))
 
-from support.plugin import plugin
-from support.common import LocalizedError
+from common.plugin import plugin
+from common.localized_error import LocalizedError
 
 import lostfilm.routes
 
