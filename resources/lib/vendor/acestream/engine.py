@@ -14,7 +14,7 @@ from error import Error
 try:
     from collections import OrderedDict
 except ImportError:
-    from ordereddict import OrderedDict
+    from vendor.ordereddict import OrderedDict
 
 
 class Engine:
