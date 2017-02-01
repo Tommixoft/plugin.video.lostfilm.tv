@@ -10,9 +10,10 @@ from contextlib import closing
 from util.causedexception import CausedException
 from util.enum import Enum
 from util.ordereddict import OrderedDict
-from xbmcswift2 import xbmc, xbmcgui, xbmcvfs, direxists, ensure_unicode, actions
 from support.plugin import plugin
-from xbmcswift2.common import sleep, file_size, get_dir_size
+
+from xbmcswift2 import xbmc, xbmcgui, xbmcvfs, actions
+from extensions.xbmcswift2.common import sleep, file_size, get_dir_size, direxists, ensure_unicode
 
 
 ADDON_PATH = plugin.addon.getAddonInfo('path')

@@ -4,6 +4,8 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'resources', 'lib'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'resources', 'lib', 'vendor'))
+
 
 import lostfilm.routes
 from support.common import run_plugin

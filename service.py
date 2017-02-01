@@ -8,7 +8,8 @@ import xbmcgui
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'resources', 'lib'))
 
 import lostfilm.routes
-from xbmcswift2 import sleep, abort_requested, xbmc
+from vendor.xbmcswift2 import sleep, abort_requested, xbmc
+
 from support.common import LocalizedError, lang, notify
 from lostfilm.common import update_library, is_authorized
 from support.plugin import plugin
