@@ -1,36 +1,42 @@
 # -*- coding: utf-8 -*-
 
 import xbmc
+
 from xbmcswift2 import actions
-# from extensions.xbmcswift2.common import abort_requested
-
-from common.plugin import plugin
-
-
-# import support.titleformat as tf
-# from support.common import lang, with_fanart, batch, download_torrent, get_torrent
-
-
-# from lostfilm.common import select_torrent_link, get_scraper, itemify_episodes, itemify_file, play_torrent, \
-#     itemify_series, BATCH_SERIES_COUNT, BATCH_EPISODES_COUNT, library_items, update_library_menu, \
-#     library_new_episodes, NEW_LIBRARY_ITEM_COLOR, check_last_episode, check_first_start
-
-# from support.torrent import Torrent
+# from common.plugin import plugin
+from support.common import plugin
+from common.helpers import get_dom_parser, select_torrent_link, get_torrent, play_torrent
 
 @plugin.route('/')
 def index():
   plugin.set_content('tvshows')
+  dom_parser = get_dom_parser()
+  series = dom_parser.lostfilm_library()
+  plugin.add_items(series, len(series))
   plugin.finish()
 
+@plugin.route('/browse_series_episodes/<series_id>/<series_code>')
+def browse_series_episodes(series_id, series_code):
+  plugin.set_content('episodes')
+  dom_parser = get_dom_parser()
+  episodes = dom_parser.series_episodes(series_id, series_code)
+  plugin.add_items(episodes, 0)
+  plugin.finish()
 
-  # scraper = get_scraper()
-  # episodes = scraper.browse_episodes()
-  # # new_str = "(%s) " % tf.color(str(len(new_episodes)), NEW_LIBRARY_ITEM_COLOR) if new_episodes else ""
-  # # {'label': lang(40407) % new_str, 'path': plugin.url_for('browse_library')}
-  # total = 0
-  # items = itemify_episodes(episodes)
-  # plugin.add_items(items, total)
-  # # with_fanart()
+@plugin.route('/play_episode/<series_id>/<season_number>/<episode_number>')
+def play_episode(series_id, season_number, episode_number):
+  select_quality = plugin.request.arg('select_quality')
+  link = select_torrent_link(series_id, season_number, episode_number, select_quality)
+
+  if not link:
+    return
+  torrent = get_torrent(link.url)
+
+  # library_new_episodes().remove_by(series, season, episode)
+  play_torrent(torrent)
+  return
+
+
 
 
 
@@ -60,26 +66,6 @@ def index():
 #         return
 #     torrent = get_torrent(link.url)
 #     download_torrent(torrent)
-
-
-# @plugin.route('/play_episode/<series>/<season>/<episode>')
-# def play_episode(series, season, episode):
-#     select_quality = plugin.request.arg('select_quality')
-#     link = select_torrent_link(series, season, episode, select_quality)
-#     if not link:
-#         return
-#     torrent = get_torrent(link.url)
-#     library_new_episodes().remove_by(series, season, episode)
-#     play_torrent(torrent)
-
-
-# @plugin.route('/browse_series/<series_id>')
-# def browse_series(series_id):
-#     plugin.set_content('episodes')
-#     scraper = get_scraper()
-#     episodes = scraper.get_series_episodes(series_id)
-#     items = itemify_episodes(episodes, same_series=True)
-#     plugin.finish(items=with_fanart(items), cache_to_disc=False)
 
 
 # @plugin.route('/browse_all_series')

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from common.plugin import plugin
+# from common.plugin import plugin
+from support.common import plugin
 from vendor.enum import Enum
 from vendor.ordereddict import OrderedDict
 

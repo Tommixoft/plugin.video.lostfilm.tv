@@ -4,7 +4,7 @@ import logging
 import base64
 import requests
 
-from common.torrent import *
+from support.torrent import *
 
 
 class TransmissionError(TorrentClientError):

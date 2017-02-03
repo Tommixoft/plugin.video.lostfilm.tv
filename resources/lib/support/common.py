@@ -10,7 +10,7 @@ from contextlib import closing
 from support.plugin import plugin
 
 from xbmcswift2 import xbmc, xbmcgui, xbmcvfs, actions
-from extensions.xbmcswift2.common import sleep, file_size, get_dir_size, direxists, ensure_unicode
+from xbmcswift2.common import sleep, file_size, get_dir_size, direxists, ensure_unicode
 
 
 ADDON_PATH = plugin.addon.getAddonInfo('path')
@@ -271,10 +271,10 @@ def download_torrent(torrent):
         plugin.run_addon(client.addon_id)
 
 
-def get_torrent(url):
-    import support.services as services
-    torrent = services.torrent(url)
-    torrents_path = plugin.addon_data_path("torrents")
-    xbmcvfs.mkdirs(torrents_path)
-    torrent.download_locally(torrents_path)
-    return torrent
+# def get_torrent(url):
+#     import support.services as services
+#     torrent = services.torrent(url)
+#     torrents_path = plugin.addon_data_path("torrents")
+#     xbmcvfs.mkdirs(torrents_path)
+#     torrent.download_locally(torrents_path)
+#     return torrent

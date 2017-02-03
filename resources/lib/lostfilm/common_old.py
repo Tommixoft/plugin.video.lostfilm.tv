@@ -5,10 +5,10 @@
 # import support.titleformat as tf
 
 # from xbmcswift2 import xbmc, xbmcgui, actions
-# from extensions.xbmcswift2.common import  abort_requested
+# from xbmcswift2.common import  abort_requested
 
 # from lostfilm.scraper import Episode, Series, Quality, LostFilmScraper
-# from support.torrent import TorrentFile
+# from common.torrent import TorrentFile
 # from support.common import lang, date_to_str, singleton, save_files, purge_temp_dir, LocalizedError, \
 #     batch, toggle_watched_menu
 # from support.plugin import plugin

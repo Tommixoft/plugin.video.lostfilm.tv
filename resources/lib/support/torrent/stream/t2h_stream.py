@@ -9,7 +9,7 @@ import os
 from contextlib import closing, nested
 from torrent2http import Error, State, Engine, MediaType
 from xbmcswift2.common import abort_requested, sleep
-from common.torrent import *
+from support.torrent import *
 from support.abstract.player import AbstractPlayer
 from support.abstract.progress import AbstractTorrentTransferProgress, DummyTorrentTransferProgress
 

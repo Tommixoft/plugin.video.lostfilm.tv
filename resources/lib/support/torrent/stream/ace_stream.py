@@ -5,7 +5,7 @@ import time
 
 # noinspection PyDeprecation
 from contextlib import closing, nested
-from common.torrent import *
+from support.torrent import *
 from xbmcswift2.common import abort_requested, sleep
 from support.abstract.progress import AbstractTorrentTransferProgress, DummyTorrentTransferProgress
 from support.abstract.player import AbstractPlayer

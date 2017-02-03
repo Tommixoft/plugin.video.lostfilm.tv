@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from common.plugin import plugin
-from common.helpers import singleton
-from common.torrent import TorrentClient, TorrentStream
-
+from support.common import plugin
+from support.common import singleton
+from support.torrent import TorrentClient, TorrentStream
 
 @singleton
 def file_transfer_progress():
@@ -14,7 +13,7 @@ def file_transfer_progress():
 
 @singleton
 def transmission_client():
-  from common.torrent.client import TransmissionClient
+  from support.torrent.client import TransmissionClient
 
   return TransmissionClient(login=plugin.get_setting('transmission-login', unicode),
                             password=plugin.get_setting('transmission-password', unicode),
@@ -25,7 +24,7 @@ def transmission_client():
 
 @singleton
 def utorrent_client():
-  from common.torrent.client import UTorrentClient
+  from support.torrent.client import UTorrentClient
 
   return UTorrentClient(login=plugin.get_setting('utorrent-login', unicode),
                         password=plugin.get_setting('utorrent-password', unicode),
@@ -66,7 +65,7 @@ def stream_playing_progress():
 
 @singleton
 def ace_stream():
-  from common.torrent.stream import AceStream
+  from support.torrent.stream import AceStream
 
   return AceStream(engine=acestream_engine(),
                    buffering_progress=stream_buffering_progress(),
@@ -97,7 +96,7 @@ def torrent2http_engine():
 
 @singleton
 def torrent2http_stream():
-  from common.torrent.stream import Torrent2HttpStream
+  from support.torrent.stream import Torrent2HttpStream
 
   return Torrent2HttpStream(engine=torrent2http_engine(),
                             buffering_progress=stream_buffering_progress(),
@@ -140,7 +139,7 @@ def xrequests_session():
 
 
 def torrent(url=None, data=None, file_name=None):
-  from common.torrent import Torrent
+  from support.torrent import Torrent
 
   return Torrent(url, data, file_name)
 
