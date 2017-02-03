@@ -9,7 +9,6 @@ import support.titleformat as tf
 from collections import namedtuple
 from support.common import plugin
 from common.quality import Quality
-from lostfilm.series import Series
 from support.common import save_files, purge_temp_dir
 
 def notify(message, delay=10000):

@@ -174,13 +174,6 @@ class DomParser(object):
       link_desc = link_block.find('div', {'class': 'inner-box--desc'}).text
       size = re.search('(\d+\.\d+)', link_desc).group(1)
 
-      # self.log.info('=====')
-      # self.log.info(link_quality)
-      # self.log.info(links_href)
-      # self.log.info(self.parse_size(size))
-      # self.log.info( Quality.find(link_quality) )
-      # self.log.info('=====')
-
       links.append(TorrentLink(Quality.find(link_quality), links_href, self.parse_size(size)))
 
     return links
@@ -190,3 +183,23 @@ class DomParser(object):
       return long(float(size) * 1024 * 1024 * 1024)
     else:
       return long(float(size) * 1024 * 1024)
+
+  def mark_episode_watched(self, series_id, season_number, episode_number):
+    separator = '-'
+    serie_episode_id = separator.join((str(series_id), str(season_number), str(episode_number)))
+    watched_episodes = self.watched_episodes(series_id)
+
+    if len(watched_episodes) == 0:
+      watched = False
+    else:
+      watched = self.episode_watched(series_id, season_number, episode_number, watched_episodes['data'])
+
+    if not watched:
+      data = {
+        'act': 'serial',
+        'type': 'markepisode',
+        'val': serie_episode_id
+      }
+      self.network_request.fetchDom(url = self.network_request.post_url, data = data)
+
+    return None

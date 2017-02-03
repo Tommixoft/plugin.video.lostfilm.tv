@@ -27,12 +27,14 @@ def browse_series_episodes(series_id, series_code):
 def play_episode(series_id, season_number, episode_number):
   select_quality = plugin.request.arg('select_quality')
   link = select_torrent_link(series_id, season_number, episode_number, select_quality)
-
   if not link:
     return
+
   torrent = get_torrent(link.url)
 
-  # library_new_episodes().remove_by(series, season, episode)
+  dom_parser = get_dom_parser()
+  dom_parser.mark_episode_watched(series_id, season_number, episode_number)
+
   play_torrent(torrent)
   return
 
