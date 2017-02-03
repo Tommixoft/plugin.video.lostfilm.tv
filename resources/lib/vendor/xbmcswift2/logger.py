@@ -1,4 +1,4 @@
-'''
+"""
     xbmcswift2.log
     --------------
 
@@ -7,25 +7,26 @@
 
     :copyright: (c) 2012 by Jonathan Beluch
     :license: GPLv3, see LICENSE for more details.
-'''
+"""
 import logging
 from xbmcswift2 import CLI_MODE
-
+from common import ensure_str
+from traceback import format_exception
 
 # TODO: Add logging to a file as well when on CLI with lowest threshold
 #       possible
-#fh = logging.FileHandler('log_filename.txt')
-#fh.setLevel(logging.DEBUG)
-#fh.setFormatter(formatter)
-#log.addHandler(fh)
+# fh = logging.FileHandler('log_filename.txt')
+# fh.setLevel(logging.DEBUG)
+# fh.setFormatter(formatter)
+# log.addHandler(fh)
 # TODO: Allow a global flag to set logging level when dealing with XBMC
 # TODO: Add -q and -v flags to CLI to quiet or enabel more verbose logging
 
 
 class XBMCFilter(object):
-    '''A logging filter that streams to STDOUT or to the xbmc log if
+    """A logging filter that streams to STDOUT or to the xbmc log if
     running inside XBMC.
-    '''
+    """
     python_to_xbmc = {
         'DEBUG': 'LOGDEBUG',
         'INFO': 'LOGNOTICE',
@@ -45,16 +46,15 @@ class XBMCFilter(object):
         'LOGNONE': 7,
     }
 
-    def __init__(self, prefix):
-        self.prefix = prefix
-
-    def filter(self, record):
-        '''Returns True for all records if running in the CLI, else returns
+    @staticmethod
+    def filter(record):
+        """Returns True for all records if running in the CLI, else returns
         True.
 
         When running inside XBMC it calls the xbmc.log() method and prevents
         the message from being double printed to STDOUT.
-        '''
+        :type record: logging.LogRecord
+        """
 
         # When running in XBMC, any logged statements will be double printed
         # since we are calling xbmc.log() explicitly. Therefore we return False
@@ -67,33 +67,38 @@ class XBMCFilter(object):
             from xbmcswift2 import xbmc
             xbmc_level = XBMCFilter.xbmc_levels.get(
                 XBMCFilter.python_to_xbmc.get(record.levelname))
-            xbmc.log('%s%s' % (self.prefix, record.getMessage()), xbmc_level)
+            msg = '[%s] %s' % (record.name, record.getMessage())
+            xbmc.log(ensure_str(msg), xbmc_level)
+            if record.exc_info:
+                xbmc.log(''.join(format_exception(*record.exc_info)), xbmc_level)
             return False
 
 
-if CLI_MODE:
-    GLOBAL_LOG_LEVEL = logging.INFO
-else:
-    GLOBAL_LOG_LEVEL = logging.DEBUG
+GLOBAL_LOG_LEVEL = logging.DEBUG
 
 
 def setup_log(name):
-    '''Returns a logging instance for the provided name. The returned
+    """Returns a logging instance for the provided name. The returned
     object is an instance of logging.Logger. Logged messages will be
     printed to stderr when running in the CLI, or forwarded to XBMC's
     log when running in XBMC mode.
-    '''
-    _log = logging.getLogger(name)
+    """
+    return logging.getLogger(name)
+
+
+def setup_logging():
+    _log = logging.root
     _log.setLevel(GLOBAL_LOG_LEVEL)
     handler = logging.StreamHandler()
     formatter = logging.Formatter(
-        '%(asctime)s - %(levelname)s - [%(name)s] %(message)s')
+        '%(asctime)s - %(threadName)s - %(levelname)s - [%(name)s] %(message)s')
     handler.setFormatter(formatter)
+    handler.addFilter(XBMCFilter())
     _log.addHandler(handler)
-    _log.addFilter(XBMCFilter('[%s] ' % name))
     return _log
 
 
 # The xbmcswift2 log
 # Plugin writers should use plugin.log instead.
+setup_logging()
 log = setup_log('xbmcswift2')
