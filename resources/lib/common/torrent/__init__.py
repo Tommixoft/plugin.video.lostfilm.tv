@@ -10,7 +10,8 @@ from contextlib import closing
 import requests
 import requests.exceptions
 from support.abstract.player import AbstractPlayer
-from support.common import LocalizedEnum, LocalizedError
+from common.localized_error import LocalizedError
+from common.localized_enum import LocalizedEnum
 from vendor.bencode import bdecode, BTFailure
 from vendor.encoding import ensure_str
 

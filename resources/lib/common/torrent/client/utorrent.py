@@ -6,7 +6,7 @@ import urllib2
 import os
 import requests
 
-from support.torrent import *
+from common.torrent import *
 
 
 class UTorrentError(TorrentClientError):

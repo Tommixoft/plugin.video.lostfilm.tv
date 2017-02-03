@@ -2,7 +2,7 @@
 from support.abstract.progress import AbstractTorrentTransferProgress, AbstractProgress, AbstractFileTransferProgress
 from support.common import lang
 from support.gui import InfoOverlay, Align
-from support.torrent import TorrentStatus
+from common.torrent import TorrentStatus
 from xbmcswift2 import xbmcgui, xbmc
 
 

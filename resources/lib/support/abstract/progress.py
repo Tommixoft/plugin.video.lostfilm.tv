@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from support.torrent import TorrentStatus
+from common.torrent import TorrentStatus
 
 
 class AbstractProgress:
