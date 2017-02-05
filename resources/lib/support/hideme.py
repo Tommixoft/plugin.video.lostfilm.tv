@@ -3,8 +3,8 @@ import logging
 import requests
 from support.abstract.proxylist import *
 from concurrent.futures import ThreadPoolExecutor
-from util.htmldocument import HtmlDocument
-from util.pygif import GifDecoder
+from vendor.htmldocument import HtmlDocument
+from vendor.pygif import GifDecoder
 
 
 def split_by_n(line, n):

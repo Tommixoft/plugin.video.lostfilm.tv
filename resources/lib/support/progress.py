@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from support.abstract.progress import AbstractTorrentTransferProgress, AbstractProgress, AbstractFileTransferProgress
 from support.common import lang
 from support.gui import InfoOverlay, Align

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from operator import attrgetter
 import threading
-from util import equal_dicts
-from util.causedexception import CausedException
+from vendor.equal_dicts import equal_dicts
+from vendor.causedexception import CausedException
 
 
 class Anonymity(object):

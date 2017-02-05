@@ -3,7 +3,7 @@
 from xbmcswift2 import xbmc
 from support.abstract.player import AbstractPlayer
 from support.common import plugin
-from util.callbacks import Callbacks
+from vendor.callbacks import Callbacks
 
 
 class XbmcPlayer(AbstractPlayer):

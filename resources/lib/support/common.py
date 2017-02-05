@@ -7,12 +7,10 @@ import logging
 import threading
 from contextlib import closing
 
-from util.causedexception import CausedException
-from util.enum import Enum
-from util.ordereddict import OrderedDict
-from xbmcswift2 import xbmc, xbmcgui, xbmcvfs, direxists, ensure_unicode, actions
 from support.plugin import plugin
-from xbmcswift2.common import sleep, file_size, get_dir_size
+
+from xbmcswift2 import xbmc, xbmcgui, xbmcvfs, actions
+from xbmcswift2.common import sleep, file_size, get_dir_size, direxists, ensure_unicode
 
 
 ADDON_PATH = plugin.addon.getAddonInfo('path')
@@ -23,10 +21,6 @@ UPPERCASE_LETTERS = u'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНО
 
 lang = plugin.get_string
 log = logging.getLogger(__name__)
-
-
-def notify(message, delay=10000):
-    plugin.notify(message, lang(30000), delay, plugin.addon.getAddonInfo('icon'))
 
 
 def save_path(local=False):
@@ -231,72 +225,6 @@ def with_fanart(item, url=None):
         return item
 
 
-class LocalizedEnum(Enum):
-    @property
-    def lang_id(self):
-        raise NotImplementedError()
-
-    @property
-    def localized(self):
-        return lang(self.lang_id)
-
-    @classmethod
-    def strings(cls):
-        d = [(i.name, i.localized(lang)) for i in cls]
-        return OrderedDict(sorted(d, key=lambda t: t[1]))
-
-    def __lt__(self, other):
-        return self.localized < other.localized
-
-    def __str__(self):
-        return self.localized
-
-
-class Attribute(LocalizedEnum):
-    def get_lang_base(self):
-        raise NotImplementedError()
-
-    @property
-    def lang_id(self):
-        return self.get_lang_base() + self.id
-
-    @property
-    def id(self):
-        return self.value[0]
-
-    @property
-    def filter_val(self):
-        return self.value[1]
-
-    def __repr__(self):
-        return "<%s.%s>" % (self.__class__.__name__, self._name_)
-
-    @classmethod
-    def find(cls, what):
-        for i in cls.__iter__():
-            if what in i.value or i.name == what:
-                return i
-        return None
-
-
-class LocalizedError(CausedException):
-    def __init__(self, lang_code, reason, *args, **kwargs):
-        CausedException.__init__(self, **kwargs)
-        self.reason = reason
-        self.reason_args = args
-        self.lang_code = lang_code
-
-    @property
-    def localized(self):
-        return lang(self.lang_code) % self.reason_args
-
-    def __str__(self):
-        if isinstance(self.reason, basestring):
-            return self.reason % self.reason_args
-        else:
-            return str(self.reason)
-
-
 def translate_string(s, from_letters, to_letters):
     from_letters = [ord(char) for char in from_letters]
     trans_table = dict(zip(from_letters, to_letters))
@@ -343,23 +271,10 @@ def download_torrent(torrent):
         plugin.run_addon(client.addon_id)
 
 
-def run_plugin():
-    try:
-        plugin.run()
-    except LocalizedError as e:
-        e.log()
-        if e.kwargs.get('dialog'):
-            xbmcgui.Dialog().ok(lang(30000), *e.localized.split("|"))
-        else:
-            notify(e.localized)
-        if e.kwargs.get('check_settings'):
-            plugin.open_settings()
-
-
-def get_torrent(url):
-    import support.services as services
-    torrent = services.torrent(url)
-    torrents_path = plugin.addon_data_path("torrents")
-    xbmcvfs.mkdirs(torrents_path)
-    torrent.download_locally(torrents_path)
-    return torrent
+# def get_torrent(url):
+#     import support.services as services
+#     torrent = services.torrent(url)
+#     torrents_path = plugin.addon_data_path("torrents")
+#     xbmcvfs.mkdirs(torrents_path)
+#     torrent.download_locally(torrents_path)
+#     return torrent

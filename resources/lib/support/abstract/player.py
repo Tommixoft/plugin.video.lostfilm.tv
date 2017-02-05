@@ -3,7 +3,7 @@
 import logging
 import time
 
-from util.callbacks import Callbacks
+from vendor.callbacks import Callbacks
 
 
 class AbstractPlayer(Callbacks):

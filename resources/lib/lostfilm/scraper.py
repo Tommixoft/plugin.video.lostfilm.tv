@@ -4,13 +4,14 @@ from __future__ import unicode_literals
 from collections import namedtuple
 import hashlib
 import re
+import json
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from support.common import str_to_date, Attribute
 from support.abstract.scraper import AbstractScraper, ScraperError, parse_size
-from util.encoding import ensure_str
-from util.htmldocument import HtmlDocument
-from util.timer import Timer
+from vendor.encoding import ensure_str
+from vendor.htmldocument import HtmlDocument
+from vendor.timer import Timer
 
 
 class Series(namedtuple('Series', ['id', 'title', 'original_title', 'image', 'icon', 'poster', 'country', 'year',
@@ -71,7 +72,7 @@ TorrentLink = namedtuple('TorrentLink', ['quality', 'url', 'size'])
 
 class LostFilmScraper(AbstractScraper):
     BASE_URL = "http://www.lostfilm.tv"
-    LOGIN_URL = "http://login1.bogi.ru/login.php"
+    LOGIN_URL = "https://www.lostfilm.tv/ajaxik.php"
     BLOCKED_MESSAGE = "Контент недоступен на территории Российской Федерации"
 
     def __init__(self, login, password, cookie_jar=None, xrequests_session=None, series_cache=None, max_workers=10,
@@ -108,50 +109,56 @@ class LostFilmScraper(AbstractScraper):
         else:
             return False
 
-    def fetch(self, url, params=None, data=None, **request_params):
-        self.response = super(LostFilmScraper, self).fetch(url, params, data, **request_params)
-        encoding = self.response.encoding
-        if encoding == 'ISO-8859-1':
-            encoding = 'windows-1251'
-        return HtmlDocument.from_string(self.response.content, encoding)
+    # def fetch(self, url, params=None, data=None, **request_params):
+    #     self.response = super(LostFilmScraper, self).fetch(url, params, data, **request_params)
+    #     encoding = self.response.encoding
+    #     if encoding == 'ISO-8859-1':
+    #         encoding = 'windows-1251'
+    #     return HtmlDocument.from_string(self.response.content, encoding)
 
-    def authorize(self):
-        with Timer(logger=self.log, name='Authorization'):
-            self.fetch(self.BASE_URL + '/browse.php')
-            doc = self.fetch(self.LOGIN_URL,
-                             params={'referer': 'http://www.lostfilm.tv/'},
-                             data={'login': self.login, 'password': self.password})
-            action_url = doc.find('form').attr('action')
-            names = doc.find('input', {'type': 'hidden'}).attrs('name')
-            values = doc.find('input', {'type': 'hidden'}).attrs('value')
-            params = zip(names, [ensure_str(s) for s in values])
-            if not action_url or not names or not values:
-                self.log.debug(doc)
-                raise ScraperError(32003, "Authorization failed", check_settings=True)
-            self.fetch(action_url, data=params)
-            self.session.cookies['hash'] = self.authorization_hash
-            if not self.authorized():
-                raise ScraperError(32003, "Authorization failed", check_settings=True)
+    # def authorize(self):
+    #     with Timer(logger=self.log, name='Authorization'):
+    #         response = self.fetch(self.LOGIN_URL,
+    #                         data = {
+    #                             'act':'users',
+    #                             'type':'login',
+    #                             'mail':self.login,
+    #                             'pass':self.password,
+    #                             'rem':'0'
+    #                         })
 
-    @property
-    def authorization_hash(self):
-        return hashlib.md5(self.login + self.password).hexdigest()
+    #         parsed_response = json.loads(response.text)
+    #         if 'error' in parsed_response and parsed_response['error'] == 2:
+    #             raise ScraperError(32003, "Authorization failed", check_settings=True)
 
-    def authorized(self):
-        cookies = self.session.cookies
-        if not cookies.get('uid') or not cookies.get('pass'):
-            return False
-        if cookies.get('hash') != self.authorization_hash:
-            try:
-                cookies.clear('.lostfilm.tv')
-            except KeyError:
-                pass
-            return False
-        return True
+    #         if 'error' in parsed_response and parsed_response['error'] == 1:
+    #             self.session.cookies['hash'] = self.authorization_hash
 
-    def ensure_authorized(self):
-        if not self.authorized():
-            self.authorize()
+    #         if 'name' in parsed_response:
+    #             self.session.cookies['hash'] = self.authorization_hash
+
+    #         if not self.authorized():
+    #             raise ScraperError(32003, "Authorization failed", check_settings=True)
+
+    # @property
+    # def authorization_hash(self):
+    #     return hashlib.md5(self.login + self.password).hexdigest()
+
+    # def authorized(self):
+    #     cookies = self.session.cookies
+    #     if not cookies.get('lf_session'):
+    #         return False
+    #     if cookies.get('hash') != self.authorization_hash:
+    #         try:
+    #             cookies.clear('.lostfilm.tv')
+    #         except KeyError:
+    #             pass
+    #         return False
+    #     return True
+
+    # def ensure_authorized(self):
+    #     if not self.authorized():
+    #         self.authorize()
 
     def get_series_bulk(self, series_ids):
         """

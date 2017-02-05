@@ -10,9 +10,10 @@ from contextlib import closing
 import requests
 import requests.exceptions
 from support.abstract.player import AbstractPlayer
-from support.common import LocalizedEnum, LocalizedError
-from util.bencode import bdecode, BTFailure
-from util.encoding import ensure_str
+from common.localized_error import LocalizedError
+from common.localized_enum import LocalizedEnum
+from vendor.bencode import bdecode, BTFailure
+from vendor.encoding import ensure_str
 
 __all__ = ['Torrent', 'TorrentStatus', 'TorrentFile', 'TorrentInfo', 'TorrentStream',
            'TorrentClient', 'TorrentClientError', 'TorrentStreamError', 'TorrentError']

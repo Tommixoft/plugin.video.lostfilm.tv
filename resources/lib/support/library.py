@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from contextlib import closing
-from util.encoding import clean_filename, encode_fs, decode_fs
+from vendor.encoding import clean_filename, encode_fs, decode_fs
 import time
 import logging
 import os
