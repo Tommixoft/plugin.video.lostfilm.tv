@@ -44,11 +44,15 @@ class DomParser(object):
     for row in rows:
       link = row.find('a', {'href': '/series/.+?', 'class': 'body'})
 
+      total_episodes_count, watched_episodes_count = self.series_episode_count(row)
+
       series_data = [
         self.series_id(row),
         self.series_code(link),
         link.find('div', {'class': 'title-en'}).text,
         link.find('div', {'class': 'title-ru'}).text,
+        total_episodes_count,
+        watched_episodes_count
       ]
 
       series_list_items.append(Serie(*series_data).list_item())
@@ -68,6 +72,21 @@ class DomParser(object):
     href_attr = dom.attr('href')
     series_code = re.search('([^/]+$)', href_attr) if href_attr else ''
     return series_code.group(1) if series_code else ''
+
+  def series_episode_count(self, row):
+    episode_bar_pane = row.find('div', {'class': 'bar-pane'})
+
+    total_episodes_bar = episode_bar_pane.find('div', {'class': 'bar'})
+    total_episodes_count = total_episodes_bar.find('div', {'class': 'value'}).text
+    if total_episodes_count == '':
+      total_episodes_count = 0
+
+    watched_episodes_bar = episode_bar_pane.find('div', {'class': 'bar-active'})
+    watched_episodes_count = watched_episodes_bar.find('div', {'class': 'value'}).text
+    if watched_episodes_count == '':
+      watched_episodes_count = 0
+
+    return total_episodes_count, watched_episodes_count
 
   # Episodes
   def series_episodes(self, series_id, series_code):
@@ -90,6 +109,8 @@ class DomParser(object):
         series_code,
         'Season ' + str(len(series_blocks) - i),
         u'Сезон ' + str(len(series_blocks) - i),
+        0,
+        0
       ]
       episode_list_items.append(Serie(*series_data).episodes_list_item())
 
@@ -105,6 +126,11 @@ class DomParser(object):
           if len(watched_episodes) > 0:
             episode_watched = self.episode_watched(series_id, season_number, episode_number, watched_episodes['data'])
 
+          date_row = episode_tr.find('td', {'class': 'delta'}).text
+          date = re.search('(Ru:\ )(\d{2}.\d{2}.\d{4})', date_row).group(2)
+
+          rating = episode_tr.find('div', {'class': 'mark-green-box'}).text
+
           episode_data = [
             series_id,
             series_code,
@@ -112,6 +138,8 @@ class DomParser(object):
             episode_number,
             title_en,
             title_ru,
+            date,
+            rating,
             episode_watched
           ]
 

@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from collections import namedtuple
-# from common.plugin import plugin
 from support.common import plugin
 
 import support.titleformat as tf
 
 class Episode(namedtuple('Episode', ['series_id', 'series_code', 'season_number',
-  'episode_number', 'title_en', 'title_ru', 'watched'])):
+  'episode_number', 'title_en', 'title_ru', 'date', 'rating', 'watched'])):
 
   def list_item(self):
     return {
@@ -22,9 +21,9 @@ class Episode(namedtuple('Episode', ['series_id', 'series_code', 'season_number'
       'info': {
           'title': self.title,
           'originaltitle': self.title_en,
-          'date': None,
+          'premiered': self.episode_date,
           'plot': None,
-          'rating': None,
+          'rating': self.rating,
           'studio': None,
           'castandrole': [],
           'writer': None,
@@ -33,7 +32,7 @@ class Episode(namedtuple('Episode', ['series_id', 'series_code', 'season_number'
           'tvshowtitle': None,
           'year': None,
       },
-      # 'context_menu': self.context_menu
+      'context_menu': self.context_menu
     }
 
   @property
@@ -45,8 +44,6 @@ class Episode(namedtuple('Episode', ['series_id', 'series_code', 'season_number'
     # info_menu(s) + library_menu(s) + mark_series_watched_menu(s),
     return (plugin.get_string(40306), "Action(Info)")
 
-  # def series_url(self):
-  #   return plugin.url_for('browse_series_episodes', series_code = self.code)
   @property
   def episode_url(self):
     return plugin.url_for('play_episode',
@@ -55,6 +52,16 @@ class Episode(namedtuple('Episode', ['series_id', 'series_code', 'season_number'
       episode_number = self.episode_number,
       select_quality = True
     )
+
+  @property
+  def episode_date(self):
+    import datetime
+    import time
+    date = datetime.date(*(time.strptime(self.date, '%d.%m.%Y')[0:3]))
+    return date.strftime('%Y-%m-%d')
+
+    # str_to_date(release_date, '%d.%m.%Y %H:%M')
+    # date_to_str(e.release_date, '%Y-%m-%d')
 
   @property
   def poster(self):

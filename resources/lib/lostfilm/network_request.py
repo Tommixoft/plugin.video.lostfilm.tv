@@ -71,11 +71,11 @@ class NetworkRequest(object):
             self.save_cookies()
           return response
       except Timeout as e:
-        raise LocalizedError(32000, "Timeout while fetching URL: %s (%%s)" % url, lang(30000), cause=e)
+        raise LocalizedError(32000, "Timeout while fetching URL: %s (%%s)" % url, plugin.get_string(30000), cause=e)
       except NoValidProxiesFound as e:
         raise LocalizedError(32005, "Can't find anonymous proxy", cause=e)
       except RequestException as e:
-        raise LocalizedError(32001, "Can't fetch URL: %s (%%s)" % url, lang(30000), cause=e)
+        raise LocalizedError(32001, "Can't fetch URL: %s (%%s)" % url, plugin.get_string(30000), cause=e)
       except ProxyListException as e:
         plugin.set_setting('use-proxy', 0)
         raise LocalizedError(32004, "Can't load anonymous proxy list", cause=e)
@@ -84,7 +84,7 @@ class NetworkRequest(object):
       response = self.fetch(url, params, data, **request_params)
       encoding = response.encoding
       if encoding == 'ISO-8859-1':
-          encoding = 'windows-1251'
+          encoding = 'utf-8'
       return HtmlDocument.from_string(response.content, encoding)
 
   def ensure_authorized(self):
