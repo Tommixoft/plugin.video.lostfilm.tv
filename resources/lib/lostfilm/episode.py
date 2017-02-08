@@ -6,7 +6,7 @@ from support.common import plugin
 import support.titleformat as tf
 
 class Episode(namedtuple('Episode', ['series_id', 'series_code', 'season_number',
-  'episode_number', 'title_en', 'title_ru', 'date', 'rating', 'watched'])):
+  'episode_number', 'title_en', 'title_ru', 'date', 'rating', 'watched', 'list_title'])):
 
   def list_item(self):
     return {
@@ -22,6 +22,8 @@ class Episode(namedtuple('Episode', ['series_id', 'series_code', 'season_number'
           'title': self.title,
           'originaltitle': self.title_en,
           'premiered': self.episode_date,
+          'episode': self.episode_number,
+          'season': self.season_number,
           'plot': None,
           'rating': self.rating,
           'studio': None,
@@ -29,7 +31,7 @@ class Episode(namedtuple('Episode', ['series_id', 'series_code', 'season_number'
           'writer': None,
           'director': None,
           'genre': None,
-          'tvshowtitle': None,
+          'tvshowtitle': self.list_title,
           'year': None,
       },
       'context_menu': self.context_menu

@@ -11,7 +11,24 @@ from common.helpers import get_dom_parser, select_torrent_link, get_torrent, pla
 def index():
   plugin.set_content('tvshows')
   dom_parser = get_dom_parser()
+  series = dom_parser.showmenu()
+  plugin.add_items(series, len(series))
+  plugin.finish()
+
+
+@plugin.route('/favorites')
+def favorites():
+  plugin.set_content('tvshows')
+  dom_parser = get_dom_parser()
   series = dom_parser.lostfilm_library()
+  plugin.add_items(series, len(series))
+  plugin.finish()
+
+@plugin.route('/favnews')
+def favnews():
+  plugin.set_content('episodes')
+  dom_parser = get_dom_parser()
+  series = dom_parser.new_episodes_favorites()
   plugin.add_items(series, len(series))
   plugin.finish()
 

@@ -7,8 +7,10 @@ import json
 from lostfilm.network_request import NetworkRequest
 from lostfilm.serie import Serie
 from lostfilm.episode import Episode
+from lostfilm.menu import LFmenu
 from common.quality import Quality
 from common.helpers import TorrentLink
+import support.titleformat as tf
 
 # anonymized_urls = plugin.get_storage().setdefault('anonymized_urls', [], ttl=24 * 60 * 7)
 # return LostFilmScraper(
@@ -20,6 +22,8 @@ class DomParser(object):
   def __init__(self):
     self.log = logging.getLogger(__name__)
     self.network_request = NetworkRequest()
+    self.lfmenu = LFmenu()
+    
   # def __init__(self, login, password, cookie_jar=None, xrequests_session=None, series_cache=None, max_workers=10,
   #              anonymized_urls=None):
   #   super(LostFilmScraper, self).__init__(xrequests_session, cookie_jar)
@@ -32,10 +36,10 @@ class DomParser(object):
   #   self.session.add_proxy_need_check(self._check_content_is_blocked)
   #   self.session.add_proxy_validator(self._validate_proxy)
 
-  # Library Series
+  # Library Series (Favorites)
   def lostfilm_library(self):
     self.network_request.authorize()
-
+    # Getting Favorites #
     dom = self.network_request.fetchDom(self.network_request.base_url + '/my/type_1')
     serials_list_box = dom.find('div', {'class': 'serials-list-box'})
     rows = serials_list_box.find('div', {'class': 'serial-box'})
@@ -58,6 +62,76 @@ class DomParser(object):
       series_list_items.append(Serie(*series_data).list_item())
 
     return series_list_items
+
+  # New episodes of favorites
+  def new_episodes_favorites(self):
+    self.network_request.authorize()
+    dom = self.network_request.fetchDom(self.network_request.base_url + '/new/type_99')
+    serials_list_box = dom.find('div', {'class': 'text-block serials-list'})
+    body = serials_list_box.find('div', {'class': 'body'})
+    rows = body.find('div', {'class': 'row'})
+    episode_list_items = []
+    
+    
+
+    for row in rows:
+      data2 = re.findall('data-code="([0-9-]{3,15})">', str(row), re.MULTILINE)
+      rating = row.find('div', {'class': 'mark-green-box'}).text
+         
+      title_en = row.find('div', {'class': 'name-en'}).text
+      title_ru = row.find('div', {'class': 'name-ru'}).text
+
+      episode_title_en = row.find('div', {'class': 'beta'})[0].text
+      episode_title_ru = row.find('div', {'class': 'alpha'})[0].text
+      
+      episode_dateinfo = row.find('div', {'class': 'alpha'})[1].text
+      episode_date = re.search('([0-9]{2}.[0-9]{2}.[0-9]{4})',episode_dateinfo)
+
+
+      series_code = ''
+      series_details = re.search('(\d+)-(\d+)-(\d+)',data2[0])
+      series_id = series_details.group(1)
+      series_season = series_details.group(2)
+      series_episode = series_details.group(3)
+      
+
+      episode_data = [
+        series_id,
+        series_code,
+        series_season,
+        series_episode,
+        episode_title_en,
+        episode_title_ru,
+        episode_date.group(1),
+        rating,
+        False,
+        title_en
+      ]
+
+      episode_list_items.append(Episode(*episode_data).list_item())
+
+      del series_details
+      del episode_data
+
+    del dom
+    del rows
+    return episode_list_items
+
+#getting ID from favorite news feed #
+  def series_id_favnews(self, dom):
+    pic_box = dom.find('div', {'class': 'picture-box'})
+    if not pic_box:
+      return 0
+
+    pic = pic_box.find('img', {'class': 'thumb'})
+    if not pic:
+      return 0
+
+    id_attr = pic.attrs('src')[0]
+    series_id = re.search('(\d+)', id_attr) if id_attr else ''
+    return series_id.group(0) if series_id else 000
+
+
 
   def series_id(self, dom):
     subscribe_box = dom.find('div', {'class': 'subscribe-box'})
@@ -87,6 +161,11 @@ class DomParser(object):
       watched_episodes_count = 0
 
     return total_episodes_count, watched_episodes_count
+
+
+  def showmenu(self):
+    return self.lfmenu.menu()
+
 
   # Episodes
   def series_episodes(self, series_id, series_code):
