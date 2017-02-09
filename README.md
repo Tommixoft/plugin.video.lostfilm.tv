@@ -10,6 +10,8 @@ So far there is:
 * New episodes of my favorites (10 so far - will increase in few days )
 * Top 100 best finished tv shows 
 
+If you found bug submit them to [Issues](https://github.com/Tommixoft/plugin.video.lostfilm.tv/issues)
+
 Это форк оригинального плагина от [anteo](https://github.com/anteo/plugin.video.lostfilm.tv).
 
 На данный момент оригинальная версия плагина не работает. Данная версия частичто переработана и представляет собой MVP (minimum valuable product).
