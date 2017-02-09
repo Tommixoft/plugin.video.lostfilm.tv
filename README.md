@@ -6,7 +6,7 @@ I'll try to add usful features to this fork of plugin.
 So far there is:
 
 * My Favorites 
-* New episodes of my favorites 
+* New episodes of my favorites (10 so far - will increase in few days )
 * Top 100 best finished tv shows 
 
 Это форк оригинального плагина от [anteo](https://github.com/anteo/plugin.video.lostfilm.tv).
