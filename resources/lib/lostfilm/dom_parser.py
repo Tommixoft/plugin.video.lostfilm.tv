@@ -203,6 +203,53 @@ class DomParser(object):
 
     return series_list_items
 
+  # Get top 100 best rated already finished series #
+  def AllSeries(self):
+    self.network_request.authorize()
+    series_list_items = []
+    parsed_response = []
+
+    for x in range(0, 1000):
+      response = self.network_request.fetchDom(url = self.network_request.POST_URL, data = self.Query.getAllSeries(x * 10))
+      parsed_response = json.loads(response.text)
+
+      # if all good we will get ok
+      if parsed_response['result'] == 'ok':
+        data = parsed_response['data']
+
+        if not data:
+          break
+        if len(data) == 0:
+          break
+
+        for row in data:          
+          favorited = False
+          if 'favorited' in row:
+            favorited = True
+          else:
+            favorited = False
+
+
+          series_data = [
+            row['id'],
+            row['alias'],
+            row['title_orig'],
+            row['title'],
+            0,
+            0,
+            favorited,
+            row['rating'],
+            row['date'],
+            row['genres']
+          ]
+
+          series_list_items.append(Series(*series_data).list_item())
+        
+        del data
+      del response
+
+    return series_list_items
+
 
 #getting ID from favorite news feed #
   def series_id_favnews(self, dom):

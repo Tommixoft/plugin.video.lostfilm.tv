@@ -30,4 +30,24 @@ class AjaxQuery:
       'o': showfrom,
       's': '3',
       't': '1'
-    }  
+    }
+
+
+  def getMyFavorites(self, showfrom):
+    return {
+      'act': 'serial',
+      'type': 'search',
+      'o': showfrom,
+      's': '2',
+      't': '99'
+    }
+
+
+  def getAllSeries(self, showfrom):
+    return {
+      'act': 'serial',
+      'type': 'search',
+      'o': showfrom,
+      's': '2',
+      't': '0'
+    }    
