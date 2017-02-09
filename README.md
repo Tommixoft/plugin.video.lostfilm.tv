@@ -6,6 +6,7 @@ I'll try to add usful features to this fork of plugin.
 So far there is:
 
 * My Favorites 
+* Newest Tv Shows
 * New episodes of my favorites (10 so far - will increase in few days )
 * Top 100 best finished tv shows 
 
