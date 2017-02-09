@@ -3,8 +3,10 @@ import logging
 import re
 import json
 
+from support.common import plugin
 from lostfilm.menuentry import MenuEntry
 import support.titleformat as tf
+
 
 class LFmenu(object):
 
@@ -13,11 +15,13 @@ class LFmenu(object):
         
         # ======= CREATE MENU ITEMS ============ #
         menu_fav = ['My Favorites','Избранные сериалы','favorites']
-        menu_favnews = ['New episodes of favorites','Избранные сериалы Hовинки','favnews']
+        menu_favnews = ['New episodes of favorites','Избранные сериалы Hовинки', 'favnews']
+        menu_bestfinished = ['100 Best rated finished tv shows','Топ 100 завершенных', 'bestfinished']
 
         # ======= ADD MENU ITEMS ============ #
         menu_items.append(MenuEntry(*menu_fav).list_item())
         menu_items.append(MenuEntry(*menu_favnews).list_item())
+        menu_items.append(MenuEntry(*menu_bestfinished).list_item())
 
         return menu_items 
 

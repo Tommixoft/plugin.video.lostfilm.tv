@@ -11,20 +11,6 @@ class MenuEntry(namedtuple('MenuEntry', ['title_en', 'title_ru', 'path'])):
       'path': plugin.url_for(self.path),
       'is_playable': False,
       'thumbnail': None,
-      'info': {
-          'title': self.title,
-          'episode': None,
-          'original_title': self.title_en,
-          'plot': None,
-          'rating': None,
-          'studio': None,
-          'castandrole': [],
-          'writer': None,
-          'director': None,
-          'genre': None,
-          'tvshowtitle': None,
-          'year': None,
-      },
       'context_menu': self.context_menu
     }
 

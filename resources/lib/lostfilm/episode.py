@@ -166,7 +166,7 @@ class SeriesEpisode(namedtuple('Episode', ['series_id', 'series_title', 'season_
     if self.watched:
       return '%s.  %s' % (tf.color(self.series_title, 'white'), tf.color(self.title, 'grey'))
     else:
-      return '%s.  %s' % (tf.color(self.series_title, 'white'), tf.color(self.title, 'yellow'))
+      return '%s.  %s' % (tf.color(self.series_title, 'white'), tf.color(self.title, 'lime'))
 
   @property
   def title(self):
