@@ -6,7 +6,7 @@ import json
 
 from lostfilm.network_request import NetworkRequest
 from lostfilm.serie import Serie
-from lostfilm.episode import Episode
+from lostfilm.episode import *
 from lostfilm.menu import LFmenu
 from common.quality import Quality
 from common.helpers import TorrentLink
@@ -87,28 +87,30 @@ class DomParser(object):
       episode_dateinfo = row.find('div', {'class': 'alpha'})[1].text
       episode_date = re.search('([0-9]{2}.[0-9]{2}.[0-9]{4})',episode_dateinfo)
 
-
-      series_code = ''
       series_details = re.search('(\d+)-(\d+)-(\d+)',data2[0])
       series_id = series_details.group(1)
       series_season = series_details.group(2)
       series_episode = series_details.group(3)
-      
+
+      watched_episodes = self.watched_episodes(series_id)
+      HaveSeen = False
+
+      if len(watched_episodes) > 0:
+        HaveSeen = self.episode_watched(series_id, series_season, series_episode, watched_episodes['data'])
 
       episode_data = [
         series_id,
-        series_code,
+        title_en,
         series_season,
         series_episode,
         episode_title_en,
         episode_title_ru,
         episode_date.group(1),
         rating,
-        False,
-        title_en
+        HaveSeen
       ]
 
-      episode_list_items.append(Episode(*episode_data).list_item())
+      episode_list_items.append(SeriesEpisode(*episode_data).list_item())
 
       del series_details
       del episode_data
@@ -169,6 +171,68 @@ class DomParser(object):
 
   # Episodes
   def series_episodes(self, series_id, series_code):
+    self.network_request.authorize()
+
+    dom = self.network_request.fetchDom(self.network_request.base_url + '/series/%s/seasons' % series_code)
+    watched_episodes = self.watched_episodes(series_id)
+
+    series_blocks = dom.find('div', {'class': 'serie-block'})
+    episode_trs = series_blocks[0].find('tr')
+
+    episode_list_items = []
+
+    i = 0
+    while (i < len(series_blocks)):
+      episode_trs = series_blocks[i].find('tr')
+
+      series_data = [
+        series_id,
+        series_code,
+        'Season ' + str(len(series_blocks) - i),
+        u'Сезон ' + str(len(series_blocks) - i),
+        0,
+        0
+      ]
+      episode_list_items.append(Serie(*series_data).episodes_list_item())
+
+      for episode_tr in episode_trs:
+        if 'not-available' not in episode_tr.classes:
+          season_number, episode_number = self.episode_numbers(episode_tr.find('td', {'class': 'beta'}))
+          if season_number == 999:
+            continue
+
+          title_en, title_ru = self.episode_titles(episode_tr.find('td', {'class': 'gamma'}))
+
+          episode_watched = False
+          if len(watched_episodes) > 0:
+            episode_watched = self.episode_watched(series_id, season_number, episode_number, watched_episodes['data'])
+
+          date_row = episode_tr.find('td', {'class': 'delta'}).text
+          date = re.search('(Ru:\ )(\d{2}.\d{2}.\d{4})', date_row).group(2)
+
+          rating = episode_tr.find('div', {'class': 'mark-green-box'}).text
+
+          episode_data = [
+            series_id,
+            series_code,
+            season_number,
+            episode_number,
+            title_en,
+            title_ru,
+            date,
+            rating,
+            episode_watched
+          ]
+
+          episode_list_items.append(Episode(*episode_data).list_item())
+
+      i = i + 1
+
+    return episode_list_items
+
+
+
+  def series_episode(self, series_id, series_code, series_season, series_episode):
     self.network_request.authorize()
 
     dom = self.network_request.fetchDom(self.network_request.base_url + '/series/%s/seasons' % series_code)
