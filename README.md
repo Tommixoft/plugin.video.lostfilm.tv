@@ -6,8 +6,14 @@ I'll try to add usful features to this fork of plugin.
 So far there is:
 
 * My Favorites 
+* Newest Tv Shows
 * New episodes of my favorites (10 so far - will increase in few days )
 * Top 100 best finished tv shows 
+
+If you found bug submit them to [Issues](https://github.com/Tommixoft/plugin.video.lostfilm.tv/issues)
+
+To use this plugin - you must have account in [lostfilm.tv](http://lostfilm.tv). Plugin gets all data from website, including favorites and what episodes you already seen. There is no local library, or cache.
+
 
 Это форк оригинального плагина от [anteo](https://github.com/anteo/plugin.video.lostfilm.tv).
 
