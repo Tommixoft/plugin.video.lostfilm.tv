@@ -12,6 +12,9 @@ So far there is:
 
 If you found bug submit them to [Issues](https://github.com/Tommixoft/plugin.video.lostfilm.tv/issues)
 
+To use this plugin - you must have account in [lostfilm.tv](http://lostfilm.tv). Plugin gets all data from website, including favorites and what episodes you already seen. There is no local library, or cache.
+
+
 Это форк оригинального плагина от [anteo](https://github.com/anteo/plugin.video.lostfilm.tv).
 
 На данный момент оригинальная версия плагина не работает. Данная версия частичто переработана и представляет собой MVP (minimum valuable product).
