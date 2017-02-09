@@ -32,6 +32,14 @@ def bestfinished():
   plugin.add_items(series, len(series))
   plugin.finish()  
 
+@plugin.route('/newesttvshows')
+def newesttvshows():
+  plugin.set_content('tvshows')
+  dom_parser = get_dom_parser()
+  series = dom_parser.NewestSeries()
+  plugin.add_items(series, len(series))
+  plugin.finish()    
+
 @plugin.route('/favnews')
 def favnews():
   plugin.set_content('episodes')

@@ -12,4 +12,22 @@ class AjaxQuery:
       'o': showfrom,
       's': '1',
       't': '5'
-    } 
+    }
+
+# Follow (add to favorites) tv show 
+  def addToFavorites(self, SeriesID):
+    return {
+      'act': 'serial',
+      'type': 'follow',
+      'id': SeriesID
+    }
+
+# Get newest tv shows by most new 
+  def getNewestSeries(self, showfrom):
+    return {
+      'act': 'serial',
+      'type': 'search',
+      'o': showfrom,
+      's': '3',
+      't': '1'
+    }  
