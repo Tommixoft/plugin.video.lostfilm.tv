@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.lostfilm.tv" name="LostFilm.TV" version="0.1.2" provider-name="anteo">
+<addon id="plugin.video.lostfilm.tv" name="LostFilm.TV" version="0.2.0" provider-name="tommix">
     <requires>
         <import addon="xbmc.python" version="2.14.0"/>
         <import addon="script.module.requests" version="2.7.0"/>
@@ -15,11 +15,11 @@
         <platform>all</platform>
         <language>ru en</language>
         <website>http://lostfilm.tv/</website>
-        <source>https://github.com/anteo/plugin.video.lostfilm.tv</source>
+        <source>https://github.com/Tommixoft/plugin.video.lostfilm.tv</source>
         <summary lang="en">Explore LostFilm.TV</summary>
         <summary lang="ru">Ваш проводник по порталу LostFilm.TV</summary>
         <description lang="ru">Просматривайте новые серии любимых сериалов с портала LostFilm.TV!</description>
         <description lang="en">Watch new episodes of your favorite TV shows on LostFilm.TV!</description>
-        <email>anteo@academ.org</email>
+        <email>tommixoft@gmail.com</email>
     </extension>
 </addon>
