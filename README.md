@@ -1,6 +1,14 @@
 # plugin.video.lostfilm.tv
 LostFilm.tv addon for Kodi.tv (Fork)
 
+I'll try to add usful features to this fork of plugin.
+
+So far there is:
+
+** My Favorites **
+** New episodes of my favorites **
+** Top 100 best finished tv shows **
+
 Это форк оригинального плагина от [anteo](https://github.com/anteo/plugin.video.lostfilm.tv).
 
 На данный момент оригинальная версия плагина не работает. Данная версия частичто переработана и представляет собой MVP (minimum valuable product).
