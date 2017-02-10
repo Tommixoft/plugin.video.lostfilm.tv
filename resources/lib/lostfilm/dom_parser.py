@@ -13,6 +13,15 @@ from common.quality import Quality
 from common.helpers import TorrentLink
 import support.titleformat as tf
 
+try:
+  import StorageServer
+except:
+  import storageserverdummy as StorageServer
+
+
+cacheLong = StorageServer.StorageServer("LostFilmLong", 24) 
+cacheShort = StorageServer.StorageServer("LostFilmShort", 1) 
+
 # anonymized_urls = plugin.get_storage().setdefault('anonymized_urls', [], ttl=24 * 60 * 7)
 # return LostFilmScraper(
 #                        max_workers=BATCH_SERIES_COUNT,
@@ -66,7 +75,7 @@ class DomParser(object):
     return series_list_items
 
   # New episodes of favorites
-  def new_episodes_favorites(self):
+  def _new_episodes_favorites(self):
     self.network_request.authorize()
     dom = self.network_request.fetchDom(self.network_request.base_url + '/new/type_99')
     serials_list_box = dom.find('div', {'class': 'text-block serials-list'})
@@ -121,8 +130,11 @@ class DomParser(object):
     del rows
     return episode_list_items
 
+  def new_episodes_favorites(self):
+    return cacheShort.cacheFunction(self._new_episodes_favorites) 
+
   # Get top 100 best rated already finished series #
-  def Top100_finishedSeries(self):
+  def _Top100_finishedSeries(self):
     self.network_request.authorize()
     series_list_items = []
     parsed_response = []
@@ -162,8 +174,11 @@ class DomParser(object):
 
     return series_list_items
 
-  # Get top 100 best rated already finished series #
-  def NewestSeries(self):
+  def Top100_finishedSeries(self):
+    return cacheLong.cacheFunction(self._Top100_finishedSeries)
+
+  # Newest tv shows #
+  def _NewestSeries(self):
     self.network_request.authorize()
     series_list_items = []
     parsed_response = []
@@ -203,8 +218,12 @@ class DomParser(object):
 
     return series_list_items
 
+  def NewestSeries(self):
+    return cacheLong.cacheFunction(self._NewestSeries)
+
+
   # Get top 100 best rated already finished series #
-  def AllSeries(self):
+  def _AllSeries(self):
     self.network_request.authorize()
     series_list_items = []
     parsed_response = []
@@ -249,6 +268,12 @@ class DomParser(object):
       del response
 
     return series_list_items
+
+  
+  
+  def AllSeries(self):
+    return cacheLong.cacheFunction(self._AllSeries)
+
 
 
 #getting ID from favorite news feed #
