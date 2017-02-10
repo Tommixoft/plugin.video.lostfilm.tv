@@ -24,7 +24,8 @@ Same applies to other OS users.
 Make sure you have installed [SuperRepo](https://superrepo.org/get-started/) it will handle dependencies of this plugin.
 Then go to [Releases](https://github.com/Tommixoft/plugin.video.lostfilm.tv/releases) and download latest version zip. And install as usual AddOn from zip file.
 
-And ofcourse go to AddOn settings and fill your LostFil.tv account login details and other settings.
+And ofcourse go to AddOn settings and fill your LostFilm.tv account login details and other settings.
+If you will have problem failing script.module.torrent2http dependency - you can get this addon from plugin zip archyve.
 
 
 
