@@ -15,22 +15,17 @@ If you found bug submit them to [Issues](https://github.com/Tommixoft/plugin.vid
 
 To use this plugin - you must have account in [lostfilm.tv](http://lostfilm.tv). Plugin gets all data from website, including favorites and what episodes you already seen. There is no local library, or cache.
 
-You **HAVE to uninstall and then delete all plugin folder** from C:\Users\Your-USER\AppData\Roaming\Kodi\addons\plugin.video.lostfilm.tv in windows.
+##Installation##
+####Upgrade from old (original) plugin version####
+You **HAVE to uninstall and then delete old plugin folder** from C:\Users\Your-USER\AppData\Roaming\Kodi\addons\plugin.video.lostfilm.tv in windows.
 Same applies to other OS users.
 
+###New installation###
+Make sure you have installed [SuperRepo](https://superrepo.org/get-started/) it will handle dependencies of this plugin.
+Then go to [Releases](https://github.com/Tommixoft/plugin.video.lostfilm.tv/releases) and download latest version zip. And install as usual AddOn from zip file.
 
-Это форк оригинального плагина от [anteo](https://github.com/anteo/plugin.video.lostfilm.tv).
 
-На данный момент оригинальная версия плагина не работает. Данная версия частичто переработана и представляет собой MVP (minimum valuable product).
 
-**Протестирован на свежих версиях Kodi 16.1/17.0**
 
-**Возможно для корректной работы плагина будет необходимо очистить кэш Koid**
 
-**Плагин берёт сериалы добавленные в личную библиотеку на сайте [lostfilm.tv](lostfilm.tv), по этому для работы плагина обязателен аккаунт.**
 
-* Залогиньтесь в свою учётную запись на lostfilm.tv
-* Добавьте интересующие вас сериалы в "избранное" (если вы этого уже не сделали)
-* Откройте Kodi
-
-Из плагина удалена часть дополнительного функционала - добавления сериала в локальную библиотеку, использование прокси серверов, скачивание эпизодов по запросу и т.д.
