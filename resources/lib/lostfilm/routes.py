@@ -7,80 +7,94 @@ from xbmcswift2 import actions
 from support.common import plugin
 from common.helpers import get_dom_parser, select_torrent_link, get_torrent, play_torrent
 
+
 @plugin.route('/')
 def index():
-  plugin.set_content('tvshows')
-  dom_parser = get_dom_parser()
-  series = dom_parser.showmenu()
-  plugin.add_items(series, len(series))
-  plugin.finish()
+    plugin.set_content('tvshows')
+    dom_parser = get_dom_parser()
+    series = dom_parser.showmenu()
+    plugin.add_items(series, len(series))
+    plugin.finish()
 
 
 @plugin.route('/favorites')
 def favorites():
-  plugin.set_content('tvshows')
-  dom_parser = get_dom_parser()
-  series = dom_parser.lostfilm_library()
-  plugin.add_items(series, len(series))
-  plugin.finish()
+    plugin.set_content('tvshows')
+    dom_parser = get_dom_parser()
+    series = dom_parser.lostfilm_library()
+    plugin.add_items(series, len(series))
+    plugin.finish()
+
 
 @plugin.route('/bestfinished')
 def bestfinished():
-  plugin.set_content('tvshows')
-  dom_parser = get_dom_parser()
-  series = dom_parser.Top100_finishedSeries()
-  plugin.add_items(series, len(series))
-  plugin.finish()  
+    plugin.set_content('tvshows')
+    dom_parser = get_dom_parser()
+    series = dom_parser.Top100_finishedSeries()
+    plugin.add_items(series, len(series))
+    plugin.finish()
+
 
 @plugin.route('/newesttvshows')
 def newesttvshows():
-  plugin.set_content('tvshows')
-  dom_parser = get_dom_parser()
-  series = dom_parser.NewestSeries()
-  plugin.add_items(series, len(series))
-  plugin.finish()    
+    plugin.set_content('tvshows')
+    dom_parser = get_dom_parser()
+    series = dom_parser.NewestSeries()
+    plugin.add_items(series, len(series))
+    plugin.finish()
+
 
 @plugin.route('/allseries')
 def allseries():
-  plugin.set_content('tvshows')
-  dom_parser = get_dom_parser()
-  series = dom_parser.AllSeries()
-  plugin.add_items(series, len(series))
-  plugin.finish()
+    plugin.set_content('tvshows')
+    dom_parser = get_dom_parser()
+    series = dom_parser.AllSeries()
+    plugin.add_items(series, len(series))
+    plugin.finish()
+
 
 @plugin.route('/favnews')
 def favnews():
-  plugin.set_content('episodes')
-  dom_parser = get_dom_parser()
-  series = dom_parser.new_episodes_favorites()
-  plugin.add_items(series, len(series))
-  plugin.finish()
+    plugin.set_content('episodes')
+    dom_parser = get_dom_parser()
+    series = dom_parser.new_episodes_favorites()
+    plugin.add_items(series, len(series))
+    plugin.finish()
+
+
+@plugin.route('/trailers')
+def trailers():
+    plugin.set_content('tvshows')
+    dom_parser = get_dom_parser()
+    series = dom_parser.Trailers()
+    plugin.add_items(series, len(series))
+    plugin.finish()
+
 
 @plugin.route('/browse_series_episodes/<series_id>/<series_code>')
 def browse_series_episodes(series_id, series_code):
-  plugin.set_content('episodes')
-  dom_parser = get_dom_parser()
-  episodes = dom_parser.series_episodes(series_id, series_code)
-  plugin.add_items(episodes, 0)
-  plugin.finish()
+    plugin.set_content('episodes')
+    dom_parser = get_dom_parser()
+    episodes = dom_parser.series_episodes(series_id, series_code)
+    plugin.add_items(episodes, 0)
+    plugin.finish()
+
 
 @plugin.route('/play_episode/<series_id>/<season_number>/<episode_number>')
 def play_episode(series_id, season_number, episode_number):
-  select_quality = plugin.request.arg('select_quality')
-  link = select_torrent_link(series_id, season_number, episode_number, select_quality)
-  if not link:
+    select_quality = plugin.request.arg('select_quality')
+    link = select_torrent_link(
+        series_id, season_number, episode_number, select_quality)
+    if not link:
+        return
+
+    torrent = get_torrent(link.url)
+
+    dom_parser = get_dom_parser()
+    dom_parser.mark_episode_watched(series_id, season_number, episode_number)
+
+    play_torrent(torrent)
     return
-
-  torrent = get_torrent(link.url)
-
-  dom_parser = get_dom_parser()
-  dom_parser.mark_episode_watched(series_id, season_number, episode_number)
-
-  play_torrent(torrent)
-  return
-
-
-
 
 
 # @plugin.route('/browse_season/<series>/<season>')

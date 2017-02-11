@@ -5,6 +5,31 @@ from support.common import plugin
 
 import support.titleformat as tf
 
+
+class Trailer(namedtuple('Trailer', ['label', 'img', 'url', 'description'])):
+
+  def list_item(self):
+    return {
+      'label': self.title,
+      'path': self.url,
+      'is_playable': True,
+      'thumbnail': self.fanart_image,
+      'icon': None,
+      'properties': {
+          'fanart_image': self.fanart_image,
+      }
+    }
+
+  @property
+  def fanart_image(self):
+    return 'http:%s' % self.img
+
+  @property
+  def title(self):
+    return '[COLOR white][B]%s[/B][/COLOR][CR]    [LIGHT]%s[/LIGHT]' % (self.label, self.description.replace("LostFilm.TV",""))
+
+
+
 class Episode(namedtuple('Episode', ['series_id', 'series_code', 'season_number',
   'episode_number', 'title_en', 'title_ru', 'date', 'rating', 'watched'])):
 

@@ -65,6 +65,50 @@ class DomParser(object):
 
       return series_list_items
 
+    def _Trailers(self):
+      trailers_list_items = []
+      self.network_request.authorize()
+
+      for x in range(1, 5):
+        dom = self.network_request.fetchDom(self.network_request.base_url + '/video/page_%s/type_1' % x)
+
+        if dom:
+          videos = dom.find('div', {'class': 'video-block video_block'})
+
+          for video in videos:
+            title = 'Trailer'
+            img = ''
+            videourl = ''
+            description = ''
+
+            vdata = re.search('data-src="([0-9A-Za-z-\\.@:%_\+~#=\/]+)"', str(video), re.MULTILINE)
+            
+            if not vdata:
+              continue
+
+            imgdata = re.search('<img src="([0-9A-Za-z-\\.@:%_\+~#=\/]+)"', str(video), re.MULTILINE)
+            title = video.find('div', {'class': 'title'}).text
+            description = video.find('div', {'class': 'description'}).text
+
+            videourl = vdata.group(1)
+            img = imgdata.group(1)
+
+            trailer_data = [
+                title,
+                img,
+                videourl,
+                description
+              ]
+
+            trailers_list_items.append(Trailer(*trailer_data).list_item())
+
+
+      return trailers_list_items
+
+
+    def Trailers(self):
+      return cacheShort.cacheFunction(self._Trailers) 
+
     # New episodes of favorites
     def _new_episodes_favorites(self):
       self.network_request.authorize()
