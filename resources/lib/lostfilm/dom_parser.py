@@ -67,13 +67,13 @@ class DomParser(object):
 
     def _Trailers(self):
       trailers_list_items = []
-      self.network_request.authorize()
-
+      
       for x in range(1, 5):
         dom = self.network_request.fetchDom(self.network_request.base_url + '/video/page_%s/type_1' % x)
-
+        
         if dom:
           videos = dom.find('div', {'class': 'video-block video_block'})
+          del dom
 
           for video in videos:
             title = 'Trailer'
@@ -101,6 +101,8 @@ class DomParser(object):
               ]
 
             trailers_list_items.append(Trailer(*trailer_data).list_item())
+
+          del videos
 
 
       return trailers_list_items
