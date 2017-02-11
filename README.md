@@ -10,6 +10,7 @@ So far there is:
 * Newest Tv Shows
 * New episodes of my favorites (10 so far - will increase in few days )
 * Top 100 best finished tv shows 
+* Latest trailers
 
 **Things that mostly will not be implemented:**
 * Series plot (this requires many additional http requests and it's not optimal).
