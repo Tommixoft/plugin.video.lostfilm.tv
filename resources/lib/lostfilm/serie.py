@@ -103,7 +103,7 @@ class Series(namedtuple('Series', ['id', 'code', 'title_en', 'title_ru', 'total_
           'director': None,
           'genre': self.genre,
           'tvshowtitle': None,
-          'year': self.year,
+          'year': self.year
       },
       'context_menu': self.context_menu
     }
@@ -120,12 +120,17 @@ class Series(namedtuple('Series', ['id', 'code', 'title_en', 'title_ru', 'total_
 
   @property
   def context_menu(self):
-    return [self.info_menu]
+    return [self.info_menu, self.test_menu]
 
   @property
   def info_menu(self):
     # info_menu(s) + library_menu(s) + mark_series_watched_menu(s),
     return (plugin.get_string(40306), "Action(Info)")
+
+  @property
+  def test_menu(self):
+    # info_menu(s) + library_menu(s) + mark_series_watched_menu(s),
+    return ('As esu '+self.title_en, "Container.Refresh")
 
   @property
   def series_url(self):

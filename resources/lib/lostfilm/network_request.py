@@ -27,6 +27,7 @@ class NetworkRequest(object):
     self.cookie_jar = plugin.addon_data_path('cookies')
     self.session = xrequests_session()
     self.session.headers['User-Agent'] = self.USER_AGENT
+    self.session.headers['Origin'] = self.BASE_URL
     self.cookie_str = None
     self.load_cookies()
 
