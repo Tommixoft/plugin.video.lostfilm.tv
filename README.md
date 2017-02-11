@@ -11,9 +11,14 @@ So far there is:
 * New episodes of my favorites (10 so far - will increase in few days )
 * Top 100 best finished tv shows 
 
+**Things that mostly will not be implemented:**
+* Series plot (this requires many additional http requests and it's not optimal).
+* Kodi library integration (i see no reason for this)
+
+
 If you found bug submit them to [Issues](https://github.com/Tommixoft/plugin.video.lostfilm.tv/issues)
 
-To use this plugin - you must have account in [lostfilm.tv](http://lostfilm.tv). Plugin gets all data from website, including favorites and what episodes you already seen. There is no local library, or cache.
+To use this plugin - you must have account in [lostfilm.tv](http://lostfilm.tv). Plugin gets all data from website, including favorites and what episodes you already seen. There is no local library.
 
 ##Installation##
 ###Upgrade from old (original) plugin version###
