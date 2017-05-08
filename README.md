@@ -1,7 +1,7 @@
 # plugin.video.lostfilm.tv
 LostFilm.tv addon for Kodi.tv (Fork)
 
-I'll try to add usful features to this fork of plugin.
+I'll try to add usful features to this fork of plugin. So far you CAN NOT add to favorites from plugin, you need to add to favorites from website.
 
 So far there is:
 
@@ -21,17 +21,18 @@ If you found bug submit them to [Issues](https://github.com/Tommixoft/plugin.vid
 
 To use this plugin - you must have account in [lostfilm.tv](http://lostfilm.tv). Plugin gets all data from website, including favorites and what episodes you already seen. There is no local library.
 
-##Installation##
-###Upgrade from old (original) plugin version###
+## Installation ##
+
+### Upgrade from old (original) plugin version ###
 You **HAVE to uninstall and then delete old plugin folder** from C:\Users\Your-USER\AppData\Roaming\Kodi\addons\plugin.video.lostfilm.tv in windows.
 Same applies to other OS users.
 
-###New installation###
+### New installation ###
 Make sure you have installed [SuperRepo](https://superrepo.org/get-started/) it will handle dependencies of this plugin.
 Then go to [Releases](https://github.com/Tommixoft/plugin.video.lostfilm.tv/releases) and download latest version zip. And install as usual AddOn from zip file.
 
 And ofcourse go to AddOn settings and fill your LostFilm.tv account login details and other settings.
-####If you will have problem failing script.module.torrent2http dependency - you can get this addon (zip) [from here](https://github.com/Tommixoft/script.module.torrent2http/releases/) ####
+#### If you will have problem failing script.module.torrent2http dependency - you can get this addon (zip) [from here](https://github.com/Tommixoft/script.module.torrent2http/releases/) ####
 
 
 
