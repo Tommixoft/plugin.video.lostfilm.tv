@@ -34,6 +34,9 @@ Then go to [Releases](https://github.com/Tommixoft/plugin.video.lostfilm.tv/rele
 And ofcourse go to AddOn settings and fill your LostFilm.tv account login details and other settings.
 #### If you will have problem failing script.module.torrent2http dependency - you can get this addon (zip) [from here](https://github.com/Tommixoft/script.module.torrent2http/releases/) ####
 
+### Plugin no longer works?: ###
+LostFilm.tv added capcha protection. You MUST go to their website and login manually, then your device will eb able to login withouth capcha. You have to do this from 1 IP. Because LostFilm.tv remembers capcha settings based on IP. This hack works 100%.
+
 
 
 
