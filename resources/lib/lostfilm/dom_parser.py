@@ -40,7 +40,7 @@ class DomParser(object):
       
     # Library Series (Favorites)
     def lostfilm_library(self):
-      self.network_request.authorize()
+      self.network_request.ensure_authorized()
       # Getting Favorites #
       dom = self.network_request.fetchDom(self.network_request.base_url + '/my/type_1')
       serials_list_box = dom.find('div', {'class': 'serials-list-box'})
@@ -113,7 +113,7 @@ class DomParser(object):
 
     # New episodes of favorites
     def _new_episodes_favorites(self):
-      self.network_request.authorize()
+      self.network_request.ensure_authorized()
       dom = self.network_request.fetchDom(self.network_request.base_url + '/new/type_99')
       serials_list_box = dom.find('div', {'class': 'text-block serials-list'})
       body = serials_list_box.find('div', {'class': 'body'})
@@ -188,7 +188,7 @@ class DomParser(object):
 
     # Get top 100 best rated already finished series #
     def _Top100_finishedSeries(self):
-      self.network_request.authorize()
+      self.network_request.ensure_authorized()
       series_list_items = []
       parsed_response = []
 
@@ -233,7 +233,7 @@ class DomParser(object):
 
     # Newest tv shows #
     def _NewestSeries(self):
-      self.network_request.authorize()
+      self.network_request.ensure_authorized()
       series_list_items = []
       parsed_response = []
 
@@ -279,7 +279,7 @@ class DomParser(object):
 
     # Get top 100 best rated already finished series #
     def _AllSeries(self):
-      self.network_request.authorize()
+      self.network_request.ensure_authorized()
       series_list_items = []
       parsed_response = []
 
@@ -384,10 +384,10 @@ class DomParser(object):
 
     # Episodes
     def series_episodes(self, series_id, series_code):
-      self.network_request.authorize()
+      self.network_request.ensure_authorized()
 
       dom = self.network_request.fetchDom(self.network_request.base_url + '/series/%s/seasons' % series_code)
-      watched_episodes = self.watched_episodes(series_id)
+      watched_episodesList = self.watched_episodes(series_id)
 
       series_blocks = dom.find('div', {'class': 'serie-block'})
       episode_trs = series_blocks[0].find('tr')
@@ -417,8 +417,8 @@ class DomParser(object):
             title_en, title_ru = self.episode_titles(episode_tr.find('td', {'class': 'gamma'}))
 
             episode_watched = False
-            if len(watched_episodes) > 0:
-              episode_watched = self.episode_watched(series_id, season_number, episode_number, watched_episodes['data'])
+            if (len(watched_episodesList) > 0 and watched_episodesList.has_key('data')):
+              episode_watched = self.episode_watched(series_id, season_number, episode_number, watched_episodesList['data'])
 
             date_row = episode_tr.find('td', {'class': 'delta'}).text
             date = re.search('(Ru:\ )(\d{2}.\d{2}.\d{4})', date_row).group(2)
@@ -481,11 +481,11 @@ class DomParser(object):
     def get_torrent_links(self, series_id, season_number, episode_number):
       url = self.network_request.base_url + \
         '/v_search.php?c=%s&s=%s&e=%s' % (series_id, season_number, episode_number)
-
+      
       dom = self.network_request.fetchDom(url)
       retr_url = dom.find('a').attr('href')
-
       dom = self.network_request.fetchDom(retr_url)
+
       links_list = dom.find('div', {'class': 'inner-box--list'})
       link_blocks = links_list.find('div', {'class': 'inner-box--item'})
 

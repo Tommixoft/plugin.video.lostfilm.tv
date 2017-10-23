@@ -23,7 +23,7 @@ def launch():
           *e.localized.split("|")
         )
     else:
-        PluginHelper.notify(e.localized)
+        plugin.notify(e.localized)
     if e.kwargs.get('check_settings'):
         plugin.open_settings()
 

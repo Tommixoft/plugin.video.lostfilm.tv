@@ -18,8 +18,8 @@ from vendor.timer import Timer
 
 class NetworkRequest(object):
   USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
-  BASE_URL = "https://www.lostfilm.tv"
-  POST_URL = "https://www.lostfilm.tv/ajaxik.php"
+  BASE_URL = "http://www.lostfilm.tv"
+  POST_URL = "http://www.lostfilm.tv/ajaxik.php"
   # BLOCKED_MESSAGE = "Контент недоступен на территории Российской Федерации"
 
   def __init__(self):

@@ -120,7 +120,7 @@ class Series(namedtuple('Series', ['id', 'code', 'title_en', 'title_ru', 'total_
 
   @property
   def context_menu(self):
-    return [self.info_menu, self.test_menu]
+    return [self.test_menu]
 
   @property
   def info_menu(self):
@@ -130,7 +130,7 @@ class Series(namedtuple('Series', ['id', 'code', 'title_en', 'title_ru', 'total_
   @property
   def test_menu(self):
     # info_menu(s) + library_menu(s) + mark_series_watched_menu(s),
-    return ('As esu '+self.title_en, "Container.Refresh")
+    return ("Testas %s" % self.title_en, "plugin.url_for('browse_series_episodes2', series_id = self.id, series_code = self.code)")
 
   @property
   def series_url(self):
