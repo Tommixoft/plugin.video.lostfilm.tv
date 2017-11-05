@@ -48,7 +48,7 @@ class Serie(namedtuple('Serie', ['id', 'code', 'title_en', 'title_ru', 'total_ep
   @property
   def info_menu(self):
     # info_menu(s) + library_menu(s) + mark_series_watched_menu(s),
-    return (plugin.get_string(40306), "Action(Info)")
+    return (plugin.get_string(50001), "RunPlugin(plugin://plugin.video.lostfilm.tv/addtofavourites/%s)" % self.id)
 
   @property
   def series_url(self):
@@ -120,17 +120,14 @@ class Series(namedtuple('Series', ['id', 'code', 'title_en', 'title_ru', 'total_
 
   @property
   def context_menu(self):
-    return [self.test_menu]
+    return [self.item_menu]
 
   @property
-  def info_menu(self):
-    # info_menu(s) + library_menu(s) + mark_series_watched_menu(s),
-    return (plugin.get_string(40306), "Action(Info)")
-
-  @property
-  def test_menu(self):
-    # info_menu(s) + library_menu(s) + mark_series_watched_menu(s),
-    return ("Testas %s" % self.title_en, "plugin.url_for('browse_series_episodes2', series_id = self.id, series_code = self.code)")
+  def item_menu(self):
+    if self.favorited == True:
+      return (plugin.get_string(50001), "RunPlugin(plugin://plugin.video.lostfilm.tv/addtofavourites/%s)" % self.id)
+    else:
+      return (plugin.get_string(50000), "RunPlugin(plugin://plugin.video.lostfilm.tv/addtofavourites/%s)" % self.id)
 
   @property
   def series_url(self):

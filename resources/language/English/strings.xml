@@ -167,4 +167,7 @@
     <string id="40409">Updating library...</string>
     <string id="40410">Error occurred during updating library (see log)</string>
 
+    <string id="50000">Add to LostFilm favourites</string>
+    <string id="50001">Remove from LostFilm favourites</string>
+
 </strings>

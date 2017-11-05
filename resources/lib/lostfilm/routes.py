@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import xbmc
+import urllib
+import urllib2
 
 from xbmcswift2 import actions
 # from common.plugin import plugin
@@ -70,6 +72,12 @@ def trailers():
     plugin.add_items(series, len(series))
     plugin.finish()
 
+@plugin.route('/addtofavourites/<series_id>')
+def addtofavourites(series_id):
+    dom_parser = get_dom_parser()
+    added = dom_parser.addToFavorites(series_id)
+    del dom_parser
+    return
 
 @plugin.route('/browse_series_episodes/<series_id>/<series_code>')
 def browse_series_episodes(series_id, series_code):
