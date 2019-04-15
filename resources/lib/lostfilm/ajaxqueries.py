@@ -15,8 +15,9 @@ class AjaxQuery:
     }
 
 # Follow (add to favorites) tv show 
-  def addToFavorites(self, SeriesID):
+  def addToFavorites(self, SeriesID, SessionID):
     return {
+      'session' : SessionID,
       'act': 'serial',
       'type': 'follow',
       'id': SeriesID

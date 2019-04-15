@@ -173,8 +173,9 @@ class DomParser(object):
     # Add series to favorites. Add twice -will remove from favorites #
     def addToFavorites(self, seriesId):
       result = False
+      sessionID = self.get_sessionId()
       parsed_response = []
-      response = self.network_request.fetchDom(url=self.network_request.POST_URL, data=self.Query.addToFavorites(SeriesID=seriesId))
+      response = self.network_request.fetchDom(url=self.network_request.POST_URL, data=self.Query.addToFavorites(SeriesID=seriesId, SessionID=sessionID))
       parsed_response = json.loads(response.text)
 
       if 'result' in parsed_response:
@@ -478,6 +479,18 @@ class DomParser(object):
 
       return episode_watched
 
+
+    def get_sessionId(self):
+      url = self.network_request.base_url + '/my_messages'      
+      dom = self.network_request.fetchDom(url)
+      sessionID = '0000000000000'
+      regex = r"UserData.session = '([a-zA-Z0-9]{36,42})'"
+      #matches = re.finditer(regex, test_str, re.MULTILINE)
+      sessionID = re.search(regex, dom.html).group(1).lstrip()
+
+      return sessionID
+
+
     def get_torrent_links(self, series_id, season_number, episode_number):
       url = self.network_request.base_url + \
         '/v_search.php?c=%s&s=%s&e=%s' % (series_id, season_number, episode_number)
@@ -511,6 +524,7 @@ class DomParser(object):
       separator = '-'
       serie_episode_id = separator.join((str(series_id), str(season_number), str(episode_number)))
       watched_episodes = self.watched_episodes(series_id)
+      SessionID = self.get_sessionId()
 
       if len(watched_episodes) == 0:
         watched = False
@@ -519,6 +533,7 @@ class DomParser(object):
 
       if not watched:
         data = {
+          'session' : SessionID,
           'act': 'serial',
           'type': 'markepisode',
           'val': serie_episode_id
