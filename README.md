@@ -1,20 +1,20 @@
 # plugin.video.lostfilm.tv
-LostFilm.tv addon for Kodi.tv (Fork)
+LostFilm.tv addon for Kodi. This plugin uses LostFilm API so your favorites will be sinchronized with LostFilm.TV, your watched episodes will be sinchronized with LostFilm.Tv
+LostFilm loves to make changes to website that prevents this plugin from working correctly - when i find that plugin is broken i try to fix it.
 
-I'll try to add usful features to this fork of plugin. So far you CAN NOT add to favorites from plugin, you need to add to favorites from website.
 
-So far there is:
-
+This plugin offers such features:
+* Ru, En language, Titles.
 * All tv shows
 * My Favorites 
 * Newest Tv Shows
-* New episodes of my favorites (10 so far - will increase in few days )
-* Top 100 best finished tv shows 
+* New episodes of my favorites (10 so far. Not very usful so not high importance)
+* Top rated 100 finished tv shows 
 * Latest trailers
 
 **Things that mostly will not be implemented:**
 * Series plot (this requires many additional http requests and it's not optimal).
-* Kodi library integration (i see no reason for this)
+* Kodi library integration (i see no reason for this.)
 
 
 If you found bug submit them to [Issues](https://github.com/Tommixoft/plugin.video.lostfilm.tv/issues)
