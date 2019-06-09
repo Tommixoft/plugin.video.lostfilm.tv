@@ -521,23 +521,30 @@ class DomParser(object):
         return long(float(size) * 1024 * 1024)
 
     def mark_episode_watched(self, series_id, season_number, episode_number):
-      separator = '-'
-      serie_episode_id = separator.join((str(series_id), str(season_number), str(episode_number)))
-      watched_episodes = self.watched_episodes(series_id)
-      SessionID = self.get_sessionId()
+      separator = ''
+      serie_episode_id = separator.join((str(series_id), str((format(season_number, '03'))), str(format(episode_number, '03'))))
+      watched_episodes = self.watched_episodes(series_id)      
 
       if len(watched_episodes) == 0:
         watched = False
       else:
         watched = self.episode_watched(series_id, season_number, episode_number, watched_episodes['data'])
 
+      SessionID = self.get_sessionId()
+
       if not watched:
         data = {
           'session' : SessionID,
           'act': 'serial',
           'type': 'markepisode',
-          'val': serie_episode_id
+          'val': serie_episode_id,
+          'auto': 0,
+          'mode': 'on'
         }
-        self.network_request.fetchDom(url = self.network_request.post_url, data = data)
-
+        
+        
+        test = self.network_request.fetchDom(url = self.network_request.post_url, data = data)
+        self.log.error('==CIA==')
+        self.log.error(data)
+        self.log.error(test)
       return None

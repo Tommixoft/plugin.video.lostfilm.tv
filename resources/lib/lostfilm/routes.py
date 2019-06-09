@@ -91,17 +91,16 @@ def browse_series_episodes(series_id, series_code):
 @plugin.route('/play_episode/<series_id>/<season_number>/<episode_number>')
 def play_episode(series_id, season_number, episode_number):
     select_quality = plugin.request.arg('select_quality')
-    link = select_torrent_link(
-        series_id, season_number, episode_number, select_quality)
+    link = select_torrent_link(series_id, season_number, episode_number, select_quality)
     if not link:
         return
 
     torrent = get_torrent(link.url)
-
-    dom_parser = get_dom_parser()
-    dom_parser.mark_episode_watched(series_id, season_number, episode_number)
+    dom_parser = get_dom_parser()     
 
     play_torrent(torrent)
+    dom_parser.mark_episode_watched(series_id, season_number, episode_number)
+    
     return
 
 
